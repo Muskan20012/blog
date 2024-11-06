@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { getDocs, collection, deleteDoc, doc } from "firebase/firestore";
 import { auth, db } from "../firebase-config";
-import { onAuthStateChanged } from "firebase/auth";
 
 function Home({ isAuth }) {
     const [postLists, setPostList] = useState([]);
     const postsCollectionRef = collection(db, "posts");
 
     useEffect(() => {
+
         const getPosts = async () => {
             const data = await getDocs(postsCollectionRef);
             setPostList(data.docs.map((doc) => ({
@@ -16,7 +16,6 @@ function Home({ isAuth }) {
                 timestamp: doc.data().timestamp ? doc.data().timestamp.toDate().toLocaleString() : "N/A"
             })));
         };
-
         getPosts();
     }, []);
 
@@ -46,7 +45,7 @@ function Home({ isAuth }) {
                     <div className="card__footer">
                         <div className="user">
                             <img
-                                src={auth.currentUser.photoURL || "https://i.pravatar.cc/40?img=1"}
+                                src={auth.currentUser ? post.author.photoURLUser : "https://i.pravatar.cc/40?img=1"}
                                 height={50}
                                 alt="user__image"
                                 className="user__image"

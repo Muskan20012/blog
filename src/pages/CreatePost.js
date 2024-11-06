@@ -11,20 +11,22 @@ function CreatePost({ isAuth }) {
     let navigate = useNavigate();
 
     const createPost = async () => {
+        navigate("/");
+        console.log(auth.currentUser.photoURL);
         await addDoc(postsCollectionRef, {
             title,
             postText,
-            author: { name: auth.currentUser.displayName, id: auth.currentUser.uid },
-            timestamp: Timestamp.now() // Add the current timestamp
+            author: { name: auth.currentUser.displayName, id: auth.currentUser.uid ,photoURLUser:auth.currentUser.photoURL}, // Add the author's name and id
+            timestamp: Timestamp.now(), // Add the current timestamp
+            
         });
-        navigate("/");
     };
 
     useEffect(() => {
         if (!isAuth) {
             navigate("/login");
         }
-    }, []);
+    }, [isAuth]);
 
     return (
         <div className="createPostPage">
